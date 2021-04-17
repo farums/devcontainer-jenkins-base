@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+    vscode:
+        container_name: dev-jenkins-vscode
+        build:
+            context: .
+            dockerfile: alpine.Dockerfile
+            target: Docker-Alpine
+        image: localhost:5000/dev-jenkins-vscode
+        privileged: true
+        ports:
+            - "50000:50000"
+            # Expose Jenkins to parent on port 8080
+            - "8080:8080"
+        volumes:
+            - ../:/workspace
+            # Allow Docker In Docker to use parent docker container
+            - /var/run/docker.sock:/var/run/docker.sock
+            # SSH directory
+            - ~/.ssh:/root/.ssh:ro
+            # Git config
+            - ~/.gitconfig:/home/districter/.gitconfig
+            - ~/.gitconfig:/root/.gitconfig
+            - type: volume
+              source: jenkins_home
+              target: /var/jenkins_home
+        environment:
+            TZ: Europe/Kiev
+            JENKINS_ADMIN_ID: admin
+            JENKINS_ADMIN_PASSWORD: admin
+        cap_add:
+            - SYS_PTRACE
+        security_opt:
+            - seccomp:unconfined
+        entrypoint: zsh -c "while sleep 1000; do :; done"
+# ------------------------------------------------------------
+# volumes
+# ------------------------------------------------------------
+volumes:
+    jenkins_home:

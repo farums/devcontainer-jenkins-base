@@ -1,0 +1,10 @@
+.devcontainer
+.git
+.vscode
+.dockerignore
+.gitignore
+.editorconfig
+
+docker
+Makefile
+.env

@@ -1,0 +1,26 @@
+{
+    "name": "Jenkins",
+    "dockerComposeFile": ["docker-compose.yml"],
+    "service": "vscode",
+    "runServices": ["vscode"],
+    "shutdownAction":"stopCompose",
+    "remoteEnv": {
+        "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
+        "COMPOSE_FORCE_WINDOWS_HOST": "true"
+    },
+    "workspaceFolder": "/workspace",
+    "remoteUser": "jenkins",
+    "extensions": [
+		"Gruntfuggly.todo-tree",
+		"ms-azuretools.vscode-docker",
+		"eamodio.gitlens",
+		"shardulm94.trailing-spaces",
+		"helgardrichard.helium-icon-theme"
+	],
+    "settings": {
+        "window.title": "Jenkins",
+        // General settings
+        "files.eol": "\n",
+        "terminal.integrated.shell.linux": "/bin/zsh"
+    }
+}
