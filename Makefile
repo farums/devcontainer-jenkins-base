@@ -34,3 +34,28 @@ clear: ## Чиска докера.
 	@docker volume prune
 	#@docker rmi $(docker images -a -q) -f
 	@docker system df
+################################################################################
+# 👉                          🔑 git                                       👈 #
+################################################################################
+Tag=1.0
+ProjectName=Jenkins
+ECHO_GIT=$(ProjectName):$(Tag): GIT
+GitCommit=$(call args, $(ProjectName):$(Tag))
+git: ## GIT  
+	@status=$$(git status --porcelain); \
+	if [ ! -z "$${status}" ]; \
+	then \
+		echo "🌍 Eсть изменение фиксируем 📒$(ECHO_GIT)"; \
+		echo "📒$(ECHO_GIT) 📄 Add "   && git add .; \
+		echo "📒$(ECHO_GIT) 📄 Commit" && git commit -m "♻️ make: $(GitCommit)"; \
+		echo "📒$(ECHO_GIT) 📄 Push"   && git push -u origin master; \
+		echo "✅ Exit $(ECHO_GIT)"; \
+	fi
+gitmodules: ## GIT gitmodules
+	@$(MAKE) git GitCommit=$(GitCommit)
+git-tag:
+	@echo "📒 GIT tag"             && git tag -a $(Tag) -m "my version  $(Tag)"
+	@echo "📒 GIT push tag $(Tag)" && git push origin $(Tag)
+	@echo "📒 GIT tag list " && git tag -l
+################################################################################
+# 👉                                                                       👈 #
